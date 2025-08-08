@@ -18,14 +18,27 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/register', function () {
-    return view('register');
-});
+// Route::get('/register', function () {
+//     return view('register');
+// });
 
-Route::get('/login', function () {
-    return view('login');
-});
+// Route::get('/login', function () {
+//     return view('login');
+// });
 
-Route::get('/admin', function(){
-    return view('admin');
-});
+// Route::get('/admin', function(){
+//     return view('admin');
+// });
+
+// routes/web.php
+use App\Http\Controllers\BlogController;
+Route::get('/blog', [BlogController::class, 'index']);
+
+use App\Http\Controllers\AuthController;//login route by controller
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+use App\Http\Controllers\RegisterController;//register route by controller
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [RegisterController::class, 'register']);

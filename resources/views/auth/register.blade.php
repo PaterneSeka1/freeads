@@ -6,7 +6,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-gray-100 text-center py-10">
-    <section class="bg-gray-50 dark:bg-gray-900">
+    {{-- <section class="bg-gray-50 dark:bg-gray-900">
         <div class="flex flex-col items-center justify-center px-6 mx-auto md:h-screen lg:py-0">
             <div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
                 <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
@@ -54,6 +54,56 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
+    <form method="POST" action="{{ url('/register') }}" class="bg-white p-8 rounded shadow-md w-96">
+        @csrf
+
+        <h2 class="text-2xl font-bold mb-6 text-center">Créer un compte</h2>
+
+        @if ($errors->any())
+            <div class="mb-4 text-red-600">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>- {{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <div class="mb-4">
+            <label for="name" class="block mb-1 font-medium">Nom complet</label>
+            <input type="text" id="name" name="name" value="{{ old('name') }}" required
+                class="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+        </div>
+
+        <div class="mb-4">
+            <label for="email" class="block mb-1 font-medium">Email</label>
+            <input type="email" id="email" name="email" value="{{ old('email') }}" required
+                class="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+        </div>
+
+        <div class="mb-4">
+            <label for="number_phone" class="block mb-1 font-medium">Numéro de téléphone</label>
+            <input type="text" id="number_phone" name="number_phone" value="{{ old('number_phone') }}" required
+                class="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+        </div>
+
+        <div class="mb-4">
+            <label for="password" class="block mb-1 font-medium">Mot de passe</label>
+            <input type="password" id="password" name="password" required
+                class="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+        </div>
+
+        <div class="mb-6">
+            <label for="password_confirmation" class="block mb-1 font-medium">Confirmer le mot de passe</label>
+            <input type="password" id="password_confirmation" name="password_confirmation" required
+                class="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+        </div>
+
+        <button type="submit"
+            class="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700 transition">
+            S'inscrire
+        </button>
+    </form>
 </body>
 </html>
