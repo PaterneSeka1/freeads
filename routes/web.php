@@ -2,43 +2,36 @@
 
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\LoginController;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Auth\VerificationController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
+//home route
 Route::get('/', function () {
     return view('welcome');
 });
+Auth::routes(['verify' => true]);
 
-// Route::get('/register', function () {
-//     return view('register');
-// });
+Route::get('/email/verify', [VerificationController::class, 'show'])->name('verification.notice');
+Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
+Route::post('/email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
 
-// Route::get('/login', function () {
-//     return view('login');
-// });
+//dashboard route
+Route::get('/dashboard', function(){
+    return view('dashboard');
+})->middleware(['auth', 'verified']);
 
-// Route::get('/admin', function(){
-//     return view('admin');
-// });
+//register route
+Route::get('/register', [RegisterController::class, 'showSignUp'])->name('register');
+Route::post('/register', [RegisterController::class, 'signUp'])->name('registration.register');
 
-// routes/web.php
-use App\Http\Controllers\BlogController;
-Route::get('/blog', [BlogController::class, 'index']);
+//login route
+Route::get('/login', [LoginController::class, 'showFormLogin'])->name('login');
+Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
+//logout route
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-use App\Http\Controllers\AuthController;//login route by controller
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Auth::routes();
 
-use App\Http\Controllers\RegisterController;//register route by controller
-Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-Route::post('/register', [RegisterController::class, 'register']);
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
