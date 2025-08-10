@@ -1,11 +1,10 @@
-@extends('layouts.app')
+@extends('components.layout')
 
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
 
                 <div class="card-body">
                     <div class="row row-cols-1 row-cols-md-2 g-4">
@@ -52,5 +51,4 @@
     </div>
 </div>
 
-@include('components.footer');
 @endsection

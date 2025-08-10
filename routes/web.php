@@ -6,12 +6,15 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\BlogController;
 
 //Home Route
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware(['auth', 'verified']);
 
 Auth::routes(['verify' => true]);
 
+//Confirmation by email
 Route::get('/email/verify', [VerificationController::class, 'show'])->name('verification.notice');
 Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
 Route::post('/email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
@@ -31,4 +34,18 @@ Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
 //logout route
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
+//auth routes views
 Auth::routes();
+
+//catégories
+Route::middleware(['auth', 'is_admin'])->group(function () {
+    Route::resource('categories', CategoryController::class);
+});
+
+//blog 
+Route::get('/blogs/all', [BlogController::class, 'allArticles'])->name('blogs.all');
+Route::middleware(['auth'])->group(function () {
+    Route::resource('blogs', BlogController::class);
+}); 
+
+
