@@ -7,10 +7,9 @@ use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\VerificationController;
 
-//home route
-Route::get('/', function () {
-    return view('welcome');
-});
+//Home Route
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware(['auth', 'verified']);
+
 Auth::routes(['verify' => true]);
 
 Route::get('/email/verify', [VerificationController::class, 'show'])->name('verification.notice');
@@ -33,5 +32,3 @@ Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
